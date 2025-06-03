@@ -1,12 +1,5 @@
-// src/app/page.tsx
-import PathFinderForm from "../components/PathFinderForm";
-import Header from "../components/Header";
+import PathFinderGame from "@/components/PathFinderGame";
 
 export default function HomePage() {
-  return (
-    <>
-      <Header />
-      <PathFinderForm />
-    </>
-  );
+  return <PathFinderGame />;
 }

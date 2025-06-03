@@ -1,19 +1,16 @@
-// src/app/layout.tsx
-import "../app/globals.css";
-import { ReactNode } from "react";
+import "./globals.css";
+import type { ReactNode } from "react";
 
 export const metadata = {
-  title: "PathFinder Frontend",
-  description: "Interfaz para consumir PathFinder API",
+  title: "Magical Runes Forest - PathFinder Game",
+  description: "Find the optimal energy path through the magical forest",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="es">
-      <body className="bg-gradient-to-br from-indigo-50 to-white">
-        <div className="min-h-screen flex flex-col items-center px-4 py-10">
-          {children}
-        </div>
+    <html lang="en">
+      <body className="bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-50 min-h-screen">
+        {children}
       </body>
     </html>
   );
