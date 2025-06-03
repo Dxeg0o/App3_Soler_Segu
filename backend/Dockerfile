@@ -29,4 +29,8 @@ WORKDIR /home/appuser
 # Copiamos el ejecutable desde la etapa "builder"
 # Ajusta la ruta al binario según dónde Cabal lo haya dejado. 
 # Normalmente será algo como: dist-newstyle/build/<ghc-version>/<pkg-name>/x/<exe-name>/build/<exe-name>/<exe-name>
-COPY --from=builder /app/dist-newstyle/build/*/*/x/pathfinder-api/build/pathfinder-
+COPY --from=builder \
+  /app/dist-newstyle/build/*/*/x/App3-Soler-Segu/build/App3-Soler-Segu/App3-Soler-Segu \
+  /usr/local/bin/App3
+
+CMD ["App3"]
