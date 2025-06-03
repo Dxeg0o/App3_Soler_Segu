@@ -33,4 +33,4 @@ COPY --from=builder \
   /app/dist-newstyle/build/*/*/x/App3-Soler-Segu/build/App3-Soler-Segu/App3-Soler-Segu \
   /usr/local/bin/App3
 
-CMD ["App3"]
+CMD ["bash", "-c", "App3 --server ${PORT:-8080}"]
