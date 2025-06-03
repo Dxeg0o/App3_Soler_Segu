@@ -24,25 +24,25 @@ export default function GridEditor({
     onGridChange(newGrid);
   };
 
-  const addRow = () => {
-    const newRow = new Array(grid[0]?.length || 4).fill(0);
-    onGridChange([...grid, newRow]);
+  /**
+   * Increase grid size by one row and one column to keep it square
+   */
+  const increaseSize = () => {
+    const newSize = grid.length + 1;
+    // add a column to each existing row
+    const expanded = grid.map((row) => [...row, 0]);
+    // add the new row at the bottom
+    const newRow = new Array(newSize).fill(0);
+    onGridChange([...expanded, newRow]);
   };
 
-  const addColumn = () => {
-    const newGrid = grid.map((row) => [...row, 0]);
-    onGridChange(newGrid);
-  };
-
-  const removeRow = () => {
+  /**
+   * Decrease grid size by one row and one column to keep it square
+   */
+  const decreaseSize = () => {
     if (grid.length > 2) {
-      onGridChange(grid.slice(0, -1));
-    }
-  };
-
-  const removeColumn = () => {
-    if (grid[0]?.length > 2) {
-      onGridChange(grid.map((row) => row.slice(0, -1)));
+      const trimmedRows = grid.map((row) => row.slice(0, -1)).slice(0, -1);
+      onGridChange(trimmedRows);
     }
   };
 
@@ -76,31 +76,18 @@ export default function GridEditor({
     <div className="space-y-4">
       {/* Grid Controls */}
       <div className="flex flex-wrap gap-2">
-        <Button onClick={addRow} size="sm" variant="outline">
+        <Button onClick={increaseSize} size="sm" variant="outline">
           <Plus className="w-4 h-4 mr-1" />
-          Add Row
+          Increase Size
         </Button>
         <Button
-          onClick={removeRow}
+          onClick={decreaseSize}
           size="sm"
           variant="outline"
           disabled={grid.length <= 2}
         >
           <Minus className="w-4 h-4 mr-1" />
-          Remove Row
-        </Button>
-        <Button onClick={addColumn} size="sm" variant="outline">
-          <Plus className="w-4 h-4 mr-1" />
-          Add Column
-        </Button>
-        <Button
-          onClick={removeColumn}
-          size="sm"
-          variant="outline"
-          disabled={grid[0]?.length <= 2}
-        >
-          <Minus className="w-4 h-4 mr-1" />
-          Remove Column
+          Decrease Size
         </Button>
       </div>
 

@@ -43,21 +43,31 @@ export default function PathFinderGame() {
     setLoading(true);
 
     try {
-      // Simulate API call for demo purposes
-      await new Promise((resolve) => setTimeout(resolve, 1500));
+      const resp = await fetch("http://localhost:8000/api/findPath", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          prGrid: grid,
+          prInitialEnergy: initialEnergy,
+        }),
+      });
 
-      // Mock result - in real app, this would call your API
-      const mockResult: PathResponse = {
-        prPath: [
-          [0, 0],
-          [1, 1],
-          [2, 2],
-          [3, 3],
-        ],
-        prFinalEnergy: initialEnergy + 8,
-      };
+      if (!resp.ok) {
+        throw new Error(`HTTP error: ${resp.status}`);
+      }
 
-      setResult(mockResult);
+      const json = await resp.json();
+
+      if ("Right" in json) {
+        setResult(json.Right as PathResponse);
+      } else if ("Left" in json) {
+        setError(json.Left.errMessage as string);
+      } else if ("errMessage" in json) {
+        setError(json.errMessage as string);
+      } else {
+        setResult(json as PathResponse);
+      }
+
       setShowPath(true);
     } catch {
       setError("Failed to find optimal path. Please try again.");
