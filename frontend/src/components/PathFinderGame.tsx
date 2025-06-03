@@ -14,9 +14,9 @@ import {
   ArrowRight,
   Sparkles,
 } from "lucide-react";
-import GridEditor from "./GridEditor";
-import GameInstructions from "./GameInstructions";
-import PresetGrids from "./PresetGrids";
+import GridEditor from "@/components/GridEditor";
+import GameInstructions from "@/components/GameInstructions";
+import PresetGrids from "@/components/PresetGrids";
 
 interface PathResponse {
   prPath: [number, number][];
@@ -59,7 +59,7 @@ export default function PathFinderGame() {
 
       setResult(mockResult);
       setShowPath(true);
-    } catch (err) {
+    } catch {
       setError("Failed to find optimal path. Please try again.");
     } finally {
       setLoading(false);

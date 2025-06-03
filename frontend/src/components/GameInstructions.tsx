@@ -89,8 +89,8 @@ export default function GameInstructions() {
                 3
               </Badge>
               <div>
-                <strong>Find the Path:</strong> Click "Find Optimal Path" to
-                calculate the best route
+                <strong>Find the Path:</strong> Click &quot;Find Optimal
+                Path&quot; to calculate the best route
               </div>
             </li>
             <li className="flex items-start gap-3">
