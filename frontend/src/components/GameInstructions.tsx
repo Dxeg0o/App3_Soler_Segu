@@ -9,14 +9,14 @@ export default function GameInstructions() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Target className="w-5 h-5 text-purple-600" />
-            Game Objective
+            Objetivo del Juego
           </CardTitle>
         </CardHeader>
         <CardContent>
           <p className="text-gray-700">
-            Navigate through the magical forest from the top-left corner to the
-            bottom-right corner, finding the path that maximizes your energy.
-            Each rune tile will either boost or drain your magical power!
+            Recorre el bosque mágico desde la esquina superior izquierda hasta
+            la inferior derecha buscando la ruta que maximice tu energía. Cada
+            loseta de runa aumentará o reducirá tu poder mágico.
           </p>
         </CardContent>
       </Card>
@@ -25,7 +25,7 @@ export default function GameInstructions() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <Zap className="w-5 h-5 text-yellow-500" />
-            How Energy Works
+            Cómo Funciona la Energía
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
@@ -35,8 +35,8 @@ export default function GameInstructions() {
                 <Plus className="w-4 h-4" />
               </Badge>
               <div>
-                <strong>Positive Numbers:</strong> Boost your energy (e.g., +3
-                adds 3 energy points)
+                <strong>Números positivos:</strong> Aumentan tu energía (p.ej.,
+                +3 suma 3 puntos de energía)
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -44,8 +44,8 @@ export default function GameInstructions() {
                 <Minus className="w-4 h-4" />
               </Badge>
               <div>
-                <strong>Negative Numbers:</strong> Drain your energy (e.g., -2
-                removes 2 energy points)
+                <strong>Números negativos:</strong> Reducen tu energía (p.ej., -2
+                resta 2 puntos)
               </div>
             </div>
             <div className="flex items-center gap-3">
@@ -53,7 +53,7 @@ export default function GameInstructions() {
                 0
               </Badge>
               <div>
-                <strong>Zero:</strong> No effect on your energy
+                <strong>Cero:</strong> No afecta tu energía
               </div>
             </div>
           </div>
@@ -62,7 +62,7 @@ export default function GameInstructions() {
 
       <Card>
         <CardHeader>
-          <CardTitle>How to Play</CardTitle>
+          <CardTitle>Cómo Jugar</CardTitle>
         </CardHeader>
         <CardContent>
           <ol className="space-y-3 text-gray-700">
@@ -71,8 +71,8 @@ export default function GameInstructions() {
                 1
               </Badge>
               <div>
-                <strong>Set Starting Energy:</strong> Choose how much energy you
-                begin with (recommended: 10-20)
+                <strong>Establece la energía inicial:</strong> Elige cuánta
+                energía tendrás al comenzar (recomendado: 10-20)
               </div>
             </li>
             <li className="flex items-start gap-3">
@@ -80,8 +80,9 @@ export default function GameInstructions() {
                 2
               </Badge>
               <div>
-                <strong>Edit the Grid:</strong> Click on any tile to change its
-                energy value, or use presets to get started
+                <strong>Edita la cuadrícula:</strong> Haz clic en cualquier
+                casilla para cambiar su valor de energía o usa los modelos
+                predefinidos
               </div>
             </li>
             <li className="flex items-start gap-3">
@@ -89,8 +90,9 @@ export default function GameInstructions() {
                 3
               </Badge>
               <div>
-                <strong>Find the Path:</strong> Click &quot;Find Optimal
-                Path&quot; to calculate the best route
+                <strong>Encuentra la ruta:</strong> Haz clic en
+                &quot;Encontrar Ruta Óptima&quot; para calcular el mejor
+                recorrido
               </div>
             </li>
             <li className="flex items-start gap-3">
@@ -98,8 +100,8 @@ export default function GameInstructions() {
                 4
               </Badge>
               <div>
-                <strong>View Results:</strong> The optimal path will be
-                highlighted on the grid with numbered steps
+                <strong>Ver resultados:</strong> La ruta óptima se
+                resaltará en la cuadrícula con pasos numerados
               </div>
             </li>
           </ol>
@@ -108,25 +110,26 @@ export default function GameInstructions() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Tips for Success</CardTitle>
+          <CardTitle>Consejos para el Éxito</CardTitle>
         </CardHeader>
         <CardContent>
           <ul className="space-y-2 text-gray-700">
             <li className="flex items-center gap-2">
               <ArrowRight className="w-4 h-4 text-purple-600" />
-              Start with preset grids to learn the game mechanics
+              Comienza con las cuadrículas predefinidas para aprender la mecánica
             </li>
             <li className="flex items-center gap-2">
               <ArrowRight className="w-4 h-4 text-purple-600" />
-              Higher starting energy gives you more flexibility
+              Una energía inicial mayor te da más flexibilidad
             </li>
             <li className="flex items-center gap-2">
               <ArrowRight className="w-4 h-4 text-purple-600" />
-              Try creating grids with different patterns to see how paths change
+              Prueba a crear cuadrículas con distintos patrones para ver cómo
+              cambian las rutas
             </li>
             <li className="flex items-center gap-2">
               <ArrowRight className="w-4 h-4 text-purple-600" />
-              The algorithm finds the mathematically optimal path automatically
+              El algoritmo encuentra automáticamente la ruta óptima
             </li>
           </ul>
         </CardContent>

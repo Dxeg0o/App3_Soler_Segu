@@ -70,7 +70,7 @@ export default function PathFinderGame() {
 
       setShowPath(true);
     } catch {
-      setError("Failed to find optimal path. Please try again.");
+      setError("No se pudo encontrar la ruta óptima. Inténtalo de nuevo.");
     } finally {
       setLoading(false);
     }
@@ -95,14 +95,13 @@ export default function PathFinderGame() {
         <div className="flex items-center justify-center gap-2 mb-4">
           <Sparkles className="w-8 h-8 text-purple-600" />
           <h1 className="text-4xl font-bold bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-            Magical Runes Forest
+            Bosque de Runas Mágicas
           </h1>
           <Sparkles className="w-8 h-8 text-purple-600" />
         </div>
         <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Navigate through the enchanted forest to find the path that maximizes
-          your magical energy. Each rune tile will either boost or drain your
-          power!
+          Navega por el bosque encantado para encontrar el camino que maximice
+          tu energía mágica. Cada loseta de runa aumentará o drenará tu poder.
         </p>
       </div>
 
@@ -113,15 +112,15 @@ export default function PathFinderGame() {
             <TabsList className="grid w-full grid-cols-3">
               <TabsTrigger value="play" className="flex items-center gap-2">
                 <Play className="w-4 h-4" />
-                Play
+                Jugar
               </TabsTrigger>
               <TabsTrigger value="presets" className="flex items-center gap-2">
                 <Target className="w-4 h-4" />
-                Presets
+                Modelos
               </TabsTrigger>
               <TabsTrigger value="help" className="flex items-center gap-2">
                 <Lightbulb className="w-4 h-4" />
-                How to Play
+                Cómo Jugar
               </TabsTrigger>
             </TabsList>
 
@@ -131,7 +130,7 @@ export default function PathFinderGame() {
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Zap className="w-5 h-5 text-yellow-500" />
-                    Starting Energy
+                    Energía Inicial
                   </CardTitle>
                 </CardHeader>
                 <CardContent>
@@ -147,7 +146,7 @@ export default function PathFinderGame() {
                       max="100"
                     />
                     <span className="text-sm text-gray-600">
-                      Energy points to start your journey
+                      Puntos de energía para comenzar tu aventura
                     </span>
                   </div>
                 </CardContent>
@@ -156,10 +155,11 @@ export default function PathFinderGame() {
               {/* Grid Editor */}
               <Card>
                 <CardHeader>
-                  <CardTitle>Forest Grid</CardTitle>
+                  <CardTitle>Cuadrícula del Bosque</CardTitle>
                   <p className="text-sm text-gray-600">
-                    Click on tiles to edit their energy values. Positive numbers
-                    boost energy, negative numbers drain it.
+                    Haz clic en las casillas para editar sus valores de energía.
+                    Los números positivos aumentan la energía y los negativos la
+                    reducen.
                   </p>
                 </CardHeader>
                 <CardContent>
@@ -182,18 +182,18 @@ export default function PathFinderGame() {
                   {loading ? (
                     <>
                       <div className="animate-spin rounded-full h-4 w-4 border-2 border-white border-t-transparent mr-2" />
-                      Finding Path...
+                      Buscando Ruta...
                     </>
                   ) : (
                     <>
                       <Target className="w-4 h-4 mr-2" />
-                      Find Optimal Path
+                      Encontrar Ruta Óptima
                     </>
                   )}
                 </Button>
                 <Button onClick={handleReset} variant="outline" size="lg">
                   <RotateCcw className="w-4 h-4 mr-2" />
-                  Reset
+                  Reiniciar
                 </Button>
               </div>
             </TabsContent>
@@ -215,30 +215,30 @@ export default function PathFinderGame() {
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Zap className="w-5 h-5 text-yellow-500" />
-                Game Status
+                Estado del Juego
               </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Grid Size:</span>
+                <span className="text-sm text-gray-600">Tamaño de la Cuadrícula:</span>
                 <Badge variant="secondary">
                   {grid.length}×{grid[0]?.length || 0}
                 </Badge>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Starting Energy:</span>
+                <span className="text-sm text-gray-600">Energía Inicial:</span>
                 <Badge className="bg-yellow-100 text-yellow-800">
                   {initialEnergy}
                 </Badge>
               </div>
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Status:</span>
+                <span className="text-sm text-gray-600">Estado:</span>
                 <Badge variant={result ? "default" : "secondary"}>
                   {loading
-                    ? "Calculating..."
+                    ? "Calculando..."
                     : result
-                    ? "Path Found!"
-                    : "Ready"}
+                    ? "\u00a1Ruta Encontrada!"
+                    : "Listo"}
                 </Badge>
               </div>
             </CardContent>
@@ -260,28 +260,28 @@ export default function PathFinderGame() {
               <CardHeader>
                 <CardTitle className="text-green-800 flex items-center gap-2">
                   <Target className="w-5 h-5" />
-                  Optimal Path Found!
+                  ¡Ruta Óptima Encontrada!
                 </CardTitle>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-green-700">Path Length:</span>
+                    <span className="text-sm text-green-700">Longitud de la Ruta:</span>
                     <Badge className="bg-green-100 text-green-800">
-                      {result.prPath.length} steps
+                      {result.prPath.length} pasos
                     </Badge>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-green-700">
-                      Final Energy:
+                      Energía Final:
                     </span>
                     <Badge className="bg-green-100 text-green-800">
-                      {result.prFinalEnergy} points
+                      {result.prFinalEnergy} puntos
                     </Badge>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-sm text-green-700">
-                      Energy Gained:
+                      Energía Obtenida:
                     </span>
                     <Badge className="bg-green-100 text-green-800">
                       +{result.prFinalEnergy - initialEnergy}
@@ -291,7 +291,7 @@ export default function PathFinderGame() {
 
                 <div className="pt-2 border-t border-green-200">
                   <p className="text-xs text-green-600 mb-2">
-                    Path coordinates:
+                    Coordenadas de la ruta:
                   </p>
                   <div className="flex flex-wrap gap-1">
                     {result.prPath.map((coord, index) => (

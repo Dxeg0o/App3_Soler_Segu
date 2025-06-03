@@ -78,7 +78,7 @@ export default function GridEditor({
       <div className="flex flex-wrap gap-2">
         <Button onClick={increaseSize} size="sm" variant="outline">
           <Plus className="w-4 h-4 mr-1" />
-          Increase Size
+          Aumentar Tamaño
         </Button>
         <Button
           onClick={decreaseSize}
@@ -87,7 +87,7 @@ export default function GridEditor({
           disabled={grid.length <= 2}
         >
           <Minus className="w-4 h-4 mr-1" />
-          Decrease Size
+          Reducir Tamaño
         </Button>
       </div>
 
@@ -134,7 +134,7 @@ export default function GridEditor({
       {editingCell && (
         <div className="flex items-center gap-2 p-3 bg-gray-50 rounded-lg">
           <span className="text-sm">
-            Edit cell ({editingCell[0]}, {editingCell[1]}):
+            Editar celda ({editingCell[0]}, {editingCell[1]}):
           </span>
           <input
             type="number"
@@ -150,7 +150,7 @@ export default function GridEditor({
             autoFocus
           />
           <Button size="sm" onClick={() => setEditingCell(null)}>
-            Done
+            Hecho
           </Button>
         </div>
       )}
@@ -159,29 +159,29 @@ export default function GridEditor({
       <div className="flex flex-wrap gap-4 text-xs text-gray-600">
         <div className="flex items-center gap-1">
           <div className="w-3 h-3 bg-green-100 border border-green-300 rounded"></div>
-          <span>Positive (Energy Boost)</span>
+          <span>Positivo (Aumenta Energía)</span>
         </div>
         <div className="flex items-center gap-1">
           <div className="w-3 h-3 bg-red-100 border border-red-300 rounded"></div>
-          <span>Negative (Energy Drain)</span>
+          <span>Negativo (Reduce Energía)</span>
         </div>
         <div className="flex items-center gap-1">
           <div className="w-3 h-3 bg-gray-100 border border-gray-300 rounded"></div>
-          <span>Neutral</span>
+          <span>Neutro</span>
         </div>
         {path && (
           <>
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 bg-green-500 rounded"></div>
-              <span>Start</span>
+              <span>Inicio</span>
             </div>
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 bg-blue-500 rounded"></div>
-              <span>Path</span>
+              <span>Camino</span>
             </div>
             <div className="flex items-center gap-1">
               <div className="w-3 h-3 bg-red-500 rounded"></div>
-              <span>End</span>
+              <span>Fin</span>
             </div>
           </>
         )}
