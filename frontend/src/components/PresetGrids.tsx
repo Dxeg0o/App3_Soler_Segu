@@ -11,19 +11,19 @@ interface PresetGridsProps {
 
 const presets = [
   {
-    name: "Beginner Forest",
-    description: "A simple 3×3 grid perfect for learning",
+    name: "Bosque Principiante",
+    description: "Una cuadricula 3×3 sencilla para aprender",
     grid: [
       [1, -1, 2],
       [0, 3, -2],
       [2, 1, 4],
     ],
     energy: 8,
-    difficulty: "Easy",
+    difficulty: "Fácil",
   },
   {
-    name: "Enchanted Path",
-    description: "Medium difficulty with mixed energy zones",
+    name: "Senda Encantada",
+    description: "Dificultad media con zonas de energía mixtas",
     grid: [
       [2, -1, 0, 3],
       [1, 4, -3, 2],
@@ -31,11 +31,11 @@ const presets = [
       [3, -2, 2, 1],
     ],
     energy: 12,
-    difficulty: "Medium",
+    difficulty: "Media",
   },
   {
-    name: "Dragon's Lair",
-    description: "Challenging 5×5 grid with high stakes",
+    name: "Guarida del Dragón",
+    description: "Cuadrícula 5×5 desafiante de alto riesgo",
     grid: [
       [3, -2, 1, -4, 2],
       [-1, 5, -3, 1, -2],
@@ -44,11 +44,11 @@ const presets = [
       [1, -4, 2, -1, 5],
     ],
     energy: 15,
-    difficulty: "Hard",
+    difficulty: "Difícil",
   },
   {
-    name: "Mystic Maze",
-    description: "Complex 6×6 grid for experts",
+    name: "Laberinto Místico",
+    description: "Compleja cuadrícula 6×6 para expertos",
     grid: [
       [2, -3, 1, 4, -2, 3],
       [-1, 5, -4, 2, 1, -3],
@@ -58,20 +58,20 @@ const presets = [
       [-2, 4, -3, 2, -1, 7],
     ],
     energy: 20,
-    difficulty: "Expert",
+    difficulty: "Experto",
   },
 ];
 
 export default function PresetGrids({ onLoadPreset }: PresetGridsProps) {
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case "Easy":
+      case "Fácil":
         return "bg-green-100 text-green-800";
-      case "Medium":
+      case "Media":
         return "bg-yellow-100 text-yellow-800";
-      case "Hard":
+      case "Difícil":
         return "bg-orange-100 text-orange-800";
-      case "Expert":
+      case "Experto":
         return "bg-red-100 text-red-800";
       default:
         return "bg-gray-100 text-gray-800";
@@ -82,11 +82,11 @@ export default function PresetGrids({ onLoadPreset }: PresetGridsProps) {
     <div className="space-y-4">
       <div className="text-center mb-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-2">
-          Choose a Preset Grid
+          Elige una Cuadrícula Predefinida
         </h3>
         <p className="text-sm text-gray-600">
-          Select a pre-designed forest to get started quickly, or use them as
-          inspiration for your own grids.
+          Selecciona un bosque predefinido para comenzar rápido o utilízalos como
+          inspiración para tus propias cuadrículas.
         </p>
       </div>
 
@@ -105,13 +105,13 @@ export default function PresetGrids({ onLoadPreset }: PresetGridsProps) {
             <CardContent className="space-y-4">
               <div className="flex items-center gap-4 text-sm text-gray-600">
                 <span>
-                  Grid Size:{" "}
+                  Tamaño:{" "}
                   <strong>
                     {preset.grid.length}×{preset.grid[0].length}
                   </strong>
                 </span>
                 <span>
-                  Starting Energy: <strong>{preset.energy}</strong>
+                  Energía Inicial: <strong>{preset.energy}</strong>
                 </span>
               </div>
 
@@ -148,7 +148,7 @@ export default function PresetGrids({ onLoadPreset }: PresetGridsProps) {
                 variant="outline"
               >
                 <Play className="w-4 h-4 mr-2" />
-                Load This Grid
+                Cargar Esta Cuadrícula
               </Button>
             </CardContent>
           </Card>
