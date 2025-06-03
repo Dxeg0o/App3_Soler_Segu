@@ -92,17 +92,18 @@ export default function PathFinderForm() {
   }
 
   return (
-    <div className="w-full max-w-xl bg-white shadow-md rounded-lg p-6 space-y-6">
-      <h2 className="text-2xl font-semibold text-gray-800">PathFinder API</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <section className="w-full max-w-2xl bg-white/80 backdrop-blur-md shadow-lg rounded-xl p-8 space-y-6">
+      <h2 className="text-2xl font-bold text-indigo-700">Simulador de Camino</h2>
+      <form onSubmit={handleSubmit} className="space-y-5">
         {/* Textarea para la matriz */}
         <div>
-          <label
-            htmlFor="grid"
-            className="block text-sm font-medium text-gray-700 mb-1"
-          >
-            Matriz (JSON) &mdash; ejemplo:
+          <label htmlFor="grid" className="block text-sm font-medium text-gray-700 mb-1">
+            Matriz (JSON)
           </label>
+          <p className="text-xs text-gray-500 mb-1">
+            Usa un formato como
+            <code className="px-1">[[1,-2,3],[0,4,-1],[2,2,5]]</code>
+          </p>
           <textarea
             id="grid"
             rows={5}
@@ -126,7 +127,7 @@ export default function PathFinderForm() {
             id="energy"
             value={energyText}
             onChange={(e) => setEnergyText(e.target.value)}
-            className="mt-1 block w-1/2 rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+            className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
             placeholder="10"
           />
         </div>
@@ -135,8 +136,8 @@ export default function PathFinderForm() {
         <button
           type="submit"
           disabled={loading}
-          className={`inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white ${
-            loading ? "bg-gray-400" : "bg-indigo-600 hover:bg-indigo-700"
+          className={`inline-flex justify-center px-6 py-3 rounded-md font-semibold text-white transition-colors ${
+            loading ? "bg-indigo-300" : "bg-indigo-600 hover:bg-indigo-700"
           } focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500`}
         >
           {loading ? "Procesando..." : "Enviar"}
@@ -163,6 +164,6 @@ export default function PathFinderForm() {
           </p>
         </div>
       )}
-    </div>
+    </section>
   );
 }
