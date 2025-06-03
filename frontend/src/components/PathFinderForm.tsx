@@ -73,12 +73,15 @@ export default function PathFinderForm() {
         throw new Error(`HTTP error: ${resp.status}`);
       }
 
-      const body = (await resp.json()) as PathResponse | ErrorResponse;
-
-      if ("errMessage" in body) {
-        setError(body.errMessage);
+      const json = await resp.json();
+      if ("Right" in json) {
+        setResult(json.Right as PathResponse);
+      } else if ("Left" in json) {
+        setError((json.Left as ErrorResponse).errMessage);
+      } else if ("errMessage" in json) {
+        setError((json as ErrorResponse).errMessage);
       } else {
-        setResult(body);
+        setResult(json as PathResponse);
       }
     } catch (err) {
       console.error(err);
