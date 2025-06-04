@@ -17,7 +17,7 @@ RUN apt-get update \
  && rm -rf /var/lib/apt/lists/*
 
 # Copiamos el ejecutable compilado por Cabal (como root)
-# Ajustamos el “wildcard” con 3 niveles para llegar al paquete+versión
+# Ajustamos el "wildcard" con 3 niveles para llegar al paquete+versión
 COPY --from=builder \
   /app/dist-newstyle/build/*/*/*/x/App3-Soler-Segu/build/App3-Soler-Segu/App3-Soler-Segu \
   /usr/local/bin/App3-Soler-Segu
@@ -25,11 +25,15 @@ COPY --from=builder \
 # Nos aseguramos de que tenga permiso de ejecución
 RUN chmod +x /usr/local/bin/App3-Soler-Segu
 
-# Ahora sí creamos el usuario “appuser” y cambiamos a él
+# Ahora sí creamos el usuario "appuser" y cambiamos a él
 RUN useradd -m appuser
 USER appuser
 
 WORKDIR /home/appuser
 
-# Usamos shell form para que ${PORT:-8080} se expanda correctamente
-CMD /usr/local/bin/App3-Soler-Segu --server "${PORT:-8080}"
+# Configuración de variables de entorno
+ENV PORT=8080
+ENV HOST=0.0.0.0
+
+# Usamos shell form para que ${PORT} se expanda correctamente
+CMD /usr/local/bin/App3-Soler-Segu --server "${PORT}"

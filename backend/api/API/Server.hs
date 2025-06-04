@@ -83,11 +83,11 @@ server = findPathHandler :<|> healthHandler
 
 corsPolicy :: CorsResourcePolicy
 corsPolicy = simpleCorsResourcePolicy
-  { corsRequestHeaders = ["Content-Type"]
+  { corsRequestHeaders = ["Content-Type", "Authorization", "Accept"]
   , corsMethods        = ["GET", "POST", "OPTIONS"]
-  -- corsOrigins = Nothing y corsRequireOrigin = False permiten cualquier origen
-  , corsOrigins        = Nothing
-  , corsRequireOrigin  = False
+  , corsOrigins        = Just ["*"]
+  , corsRequireOrigin  = True
+  , corsMaxAge         = Just 86400
   }
 
 --------------------------------------------------------------------------------
