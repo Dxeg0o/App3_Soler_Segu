@@ -1,36 +1,40 @@
-# ---- Etapa 1: construcción con la imagen oficial de Haskell ----
+# -------------------------------------------------------------------
+# Etapa 1: Construcción con GHC/Cabal
+# -------------------------------------------------------------------
     FROM haskell:9.2 AS build
 
-    # Directorio de trabajo
     WORKDIR /app
     
-    # Copiamos .cabal y el código fuente
+    # 1) Copiamos el cabal file y las carpetas src/ y app/
     COPY basicapi.cabal /app/
+    COPY src /app/src
     COPY app /app/app
     
-    # Actualizamos repos y compilamos el ejecutable
-    RUN cabal update
-    RUN cabal build --enable-relocatable
+    # 2) Actualizamos índices y compilamos el ejecutable, 
+    #    colocando el binario resultante en /app/basicapi-exe
+    RUN cabal update \
+     && cabal v2-install exe:basicapi-exe \
+           --installdir=/app \
+           --install-method=copy
     
-    # ---- Etapa 2: imagen mínima de producción ----
+    # -------------------------------------------------------------------
+    # Etapa 2: Imagen de producción “slim”
+    # -------------------------------------------------------------------
     FROM debian:buster-slim
     
-    # Instalamos runtime necesario (GMP)
+    # 3) Instalamos solo la dependencia nativa de GMP (necesaria para binarios GHC)
     RUN apt-get update \
      && apt-get install -y libgmp10 \
      && rm -rf /var/lib/apt/lists/*
     
     WORKDIR /app
     
-    # Copiamos el binario compilado en la etapa anterior.
-    # Ajusta la ruta si tu versión de GHC/cabal difiere.
-    COPY --from=build \
-      /app/dist-newstyle/build/x86_64-linux/ghc-9.2.*/basicapi-0.1.0.0/x/basicapi-exe/build/basicapi-exe/basicapi-exe \
-      /app/basicapi-exe
+    # 4) Copiamos el ejecutable que ya se generó en la etapa “build”
+    COPY --from=build /app/basicapi-exe /app/basicapi-exe
     
-    # Exponemos el puerto 8080 (Render enlaza a PORT)
+    # 5) Exponemos el puerto 8080 (Render vincula automáticamente PORT a 8080)
     EXPOSE 8080
     
-    # Comando por defecto para ejecutar
-    CMD ["/app/basicapi-exe"]
+    # 6) Arrancamos el binario al iniciar el contenedor
+    CMD ["/app/basicapi-exe", "--server"]
     
