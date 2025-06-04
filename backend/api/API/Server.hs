@@ -60,4 +60,4 @@ runServer port = do
   putStrLn $ "Endpoints disponibles:"
   putStrLn $ "  POST http://localhost:" ++ show port ++ "/api/findPath"
   putStrLn $ "  GET  http://localhost:" ++ show port ++ "/health"
-  run port app
+  runSettings (setPort port defaultSettings) app
