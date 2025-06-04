@@ -1,0 +1,20 @@
+cabal-version:       2.4
+name:                basicapi
+version:             0.1.0.0
+build-type:          Simple
+
+-- Dependencias generales del ejecutable
+executable basicapi-exe
+  main-is:             Main.hs
+  hs-source-dirs:      app
+  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  build-depends:
+      base            >=4.7 && <5,
+      servant         >=0.18,
+      servant-server  >=0.18,
+      aeson           >=1.4,
+      wai             >=3.2,
+      warp            >=3.3,
+      wai-cors        >=0.2,
+      text            >=1.2
+  default-language:    Haskell2010
