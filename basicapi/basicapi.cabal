@@ -3,21 +3,27 @@ name:                basicapi
 version:             0.1.0.0
 build-type:          Simple
 
+-- ------------------------------------------------------------------
+-- 1) Librería con los módulos lógicos (en src/)
+-- ------------------------------------------------------------------
 library
-  exposed-modules:     
+  exposed-modules:
       Grid
     , PathFinder
     , Rules
     , SearchAlgorithm
     , Types
-  hs-source-dirs:      
+  hs-source-dirs:
       src
   build-depends:
       base            >=4.7 && <5,
-      containers      >=0.5,
-      -- (no necesitas aeson/servant aquí porque la lógica no depende de ellos)
+      containers      >=0.5
   default-language:    Haskell2010
 
+-- ------------------------------------------------------------------
+-- 2) Ejecutable que usa Servant y nuestra librería local “basicapi”
+--    El código fuente vive en app/, incluyendo API.Server y Main.
+-- ------------------------------------------------------------------
 executable basicapi-exe
   main-is:             Main.hs
   hs-source-dirs:
@@ -32,5 +38,7 @@ executable basicapi-exe
       warp            >=3.3,
       wai-cors        >=0.2,
       text            >=1.2,
-      basicapi        -- nuestra librería local con los módulos de PathFinder
+      basicapi
+  other-modules:
+      API.Server
   default-language:    Haskell2010
