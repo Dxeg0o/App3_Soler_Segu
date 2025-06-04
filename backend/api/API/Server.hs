@@ -7,7 +7,7 @@ module API.Server (runServer, server, app) where
 import Control.Monad.IO.Class (liftIO)
 import Network.Wai
 import Network.Wai.Handler.Warp
-import Network.Wai.Middleware.Cors
+import Network.Wai.Middleware.Cors (simpleCors)
 import Servant
 import Data.Aeson
 
@@ -38,19 +38,9 @@ findPathHandler (PathRequest grid initialEnergy) = do
 healthHandler :: Handler Value
 healthHandler = return $ object ["status" .= ("OK" :: String), "service" .= ("PathFinder API" :: String)]
 
--- | Configuración de CORS para permitir requests desde el frontend
-corsPolicy :: CorsResourcePolicy
-corsPolicy = simpleCorsResourcePolicy
-  { corsRequestHeaders = ["Content-Type"]
-  , corsMethods = ["GET", "POST", "OPTIONS"]
-  -- Permitimos el frontend desplegado en Vercel y localhost durante el desarrollo
-  , corsOrigins = Just (["https://app3-soler-segu.vercel.app", "http://localhost:3000"], True)
-  , corsRequireOrigin = False
-  }
-
--- | Aplicación WAI con middleware CORS
+-- | Aplicación WAI con middleware CORS (permite cualquier origen)
 app :: Application
-app = cors (const $ Just corsPolicy) $ serve (Proxy :: Proxy PathFinderAPI) server
+app = simpleCors $ serve (Proxy :: Proxy PathFinderAPI) server
 
 -- | Función para iniciar el servidor
 runServer :: Int -> IO ()

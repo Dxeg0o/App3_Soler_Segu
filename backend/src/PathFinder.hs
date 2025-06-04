@@ -16,10 +16,12 @@ validateInitialState grid initEnergy
   | otherwise = Just startEnergy
   where
     n = gridSize grid
+    startEnergy
+      | n == 0 = initEnergy
+      | otherwise = initEnergy + startValue - startPenalty
     startPos = getStartPosition
-    startValue = valueAt grid startPos
+    startValue = if n == 0 then 0 else valueAt grid startPos
     startPenalty = trapPenalty startValue
-    startEnergy = initEnergy + startValue - startPenalty
 
 -- | Calcula el mejor camino que llegue a (n-1, n-1). 
 --   Devuelve 'Nothing' si no hay ninguno con energía ≥ 0, o 'Just (ruta, energía)'.
