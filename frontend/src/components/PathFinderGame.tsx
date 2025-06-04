@@ -45,7 +45,7 @@ export default function PathFinderGame() {
     try {
       const baseUrl =
         process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
-      const resp = await fetch(`${baseUrl}/api/findPath`, {
+      const resp = await fetch(`${baseUrl}/findPath`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -222,7 +222,9 @@ export default function PathFinderGame() {
             </CardHeader>
             <CardContent className="space-y-3">
               <div className="flex justify-between items-center">
-                <span className="text-sm text-gray-600">Tamaño de la Cuadrícula:</span>
+                <span className="text-sm text-gray-600">
+                  Tamaño de la Cuadrícula:
+                </span>
                 <Badge variant="secondary">
                   {grid.length}×{grid[0]?.length || 0}
                 </Badge>
@@ -268,7 +270,9 @@ export default function PathFinderGame() {
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <div className="flex justify-between items-center">
-                    <span className="text-sm text-green-700">Longitud de la Ruta:</span>
+                    <span className="text-sm text-green-700">
+                      Longitud de la Ruta:
+                    </span>
                     <Badge className="bg-green-100 text-green-800">
                       {result.prPath.length} pasos
                     </Badge>
