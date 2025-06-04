@@ -38,14 +38,30 @@ findPathHandler (PathRequest grid initialEnergy) = do
 healthHandler :: Handler Value
 healthHandler = return $ object ["status" .= ("OK" :: String), "service" .= ("PathFinder API" :: String)]
 
--- | Configuración de CORS para permitir requests desde el frontend
+-- | Configuración de CORS - versión específica para producción
+-- corsPolicy :: CorsResourcePolicy
+-- corsPolicy = CorsResourcePolicy
+--   { corsOrigins = Just (["https://app3-soler-segu.vercel.app"], False)
+--   , corsMethods = ["GET", "POST", "OPTIONS"]
+--   , corsRequestHeaders = ["Accept", "Content-Type", "Authorization"]
+--   , corsExposedHeaders = Nothing
+--   , corsMaxAge = Nothing
+--   , corsVaryOrigin = True
+--   , corsRequireOrigin = False
+--   , corsIgnoreFailures = False
+--   }
+
+-- | Configuración de CORS más permisiva para desarrollo/debugging
 corsPolicy :: CorsResourcePolicy
-corsPolicy = simpleCorsResourcePolicy
-  { corsRequestHeaders = ["Content-Type"]
-  , corsMethods = ["GET", "POST", "OPTIONS"]
-  -- Permitimos el frontend desplegado en Vercel y localhost durante el desarrollo
-  , corsOrigins = Just (["https://app3-soler-segu.vercel.app", "http://localhost:3000"], True)
+corsPolicy = CorsResourcePolicy
+  { corsOrigins = Nothing  -- Permite todos los orígenes
+  , corsMethods = ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"]
+  , corsRequestHeaders = ["Accept", "Accept-Language", "Content-Language", "Content-Type", "Authorization"]
+  , corsExposedHeaders = Nothing
+  , corsMaxAge = Nothing
+  , corsVaryOrigin = False
   , corsRequireOrigin = False
+  , corsIgnoreFailures = False
   }
 
 -- | Aplicación WAI con middleware CORS
@@ -59,4 +75,5 @@ runServer port = do
   putStrLn $ "Endpoints disponibles:"
   putStrLn $ "  POST http://localhost:" ++ show port ++ "/api/findPath"
   putStrLn $ "  GET  http://localhost:" ++ show port ++ "/health"
+  putStrLn $ "CORS habilitado para todos los orígenes"
   run port app
