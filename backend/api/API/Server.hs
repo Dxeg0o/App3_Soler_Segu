@@ -43,7 +43,9 @@ corsPolicy :: CorsResourcePolicy
 corsPolicy = simpleCorsResourcePolicy
   { corsRequestHeaders = ["Content-Type"]
   , corsMethods = ["GET", "POST", "OPTIONS"]
-  , corsOrigins = Nothing -- Permitir todos los orígenes (cambiar en producción)
+  -- Permitimos el frontend desplegado en Vercel y localhost durante el desarrollo
+  , corsOrigins = Just (["https://app3-soler-segu.vercel.app", "http://localhost:3000"], True)
+  , corsRequireOrigin = False
   }
 
 -- | Aplicación WAI con middleware CORS
