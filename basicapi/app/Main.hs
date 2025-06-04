@@ -7,6 +7,7 @@ module Main where
 
 import           Control.Monad.IO.Class    (liftIO)
 import           Data.Aeson                (FromJSON, ToJSON)
+import           Data.Proxy                (Proxy(..))
 import           Data.Text                 (Text)
 import           GHC.Generics              (Generic)
 import           Network.Wai               (Application)
@@ -16,51 +17,64 @@ import           Network.Wai.Middleware.Cors
   , cors
   , simpleCorsResourcePolicy
   )
-import           Servant                   ((:<|>)(..), (:>), Capture, Get, JSON, Post, ReqBody, Serve, Server, serve)
+import           Servant                   ((:<|>)(..), (:>), JSON, Post, ReqBody, Server, serve)
 import           System.Environment        (lookupEnv)
 
--- | 1) Definimos un tipo que represente la estructura JSON de la petición
+--------------------------------------------------------------------------------
+-- 1) Tipos para la petición y la respuesta JSON
+--------------------------------------------------------------------------------
+
+-- | Estructura JSON que esperamos en el body del POST
 data EchoRequest = EchoRequest
   { message :: Text
   } deriving (Eq, Show, Generic)
 
 instance FromJSON EchoRequest
 
--- | 2) Definimos un tipo para la respuesta JSON
+-- | Estructura JSON que devolvemos
 data EchoResponse = EchoResponse
   { echo :: Text
   } deriving (Eq, Show, Generic)
 
 instance ToJSON EchoResponse
 
--- | 3) La API tiene un único endpoint POST /echo que recibe 'EchoRequest' y devuelve 'EchoResponse'
+--------------------------------------------------------------------------------
+-- 2) Definición de la API: POST /echo
+--------------------------------------------------------------------------------
+
+-- El endpoint “/echo” recibe un JSON de tipo EchoRequest y devuelve EchoResponse
 type API = "echo" :> ReqBody '[JSON] EchoRequest :> Post '[JSON] EchoResponse
 
--- | 4) Implementación del handler: simplemente devolvemos el mismo texto que recibimos
+-- Implementación del handler
 server :: Server API
 server (EchoRequest msg) = do
   liftIO $ putStrLn $ "Recibido mensaje: " ++ show msg
   return $ EchoResponse msg
 
--- | 5) Proxy para levantar la API
+-- Proxy para levantar la API
 api :: Proxy API
 api = Proxy
 
--- | 6) Añadimos CORS para permitir cualquier origen en métodos POST
---    - corsOrigins = Nothing indica “*”
---    - corsMethods = ["POST"] permite solo POST (puedes agregar GET, PUT, etc., si los necesitas)
---    - corsRequestHeaders default ya incluye Content-Type; si necesitas más, añádelos
+--------------------------------------------------------------------------------
+-- 3) Aplicación Wai con CORS “*” en POST
+--------------------------------------------------------------------------------
+
+-- El middleware cors con simpleCorsResourcePolicy { corsOrigins = Nothing }
+-- permite CORS desde cualquier origen. Solo dejamos métodos POST y el header Content-Type.
 app :: Application
 app = cors (const $ Just policy) $ serve api server
   where
     policy :: CorsResourcePolicy
     policy = simpleCorsResourcePolicy
-      { corsOrigins        = Nothing
+      { corsOrigins        = Nothing         -- Nothing = “*”
       , corsMethods        = ["POST"]
       , corsRequestHeaders = ["Content-Type"]
       }
 
--- | 7) Obtenemos el puerto desde la variable de entorno PORT (necesario en Render)
+--------------------------------------------------------------------------------
+-- 4) Main: lee la variable PORT (necesaria en Render) o usa 8080 por defecto
+--------------------------------------------------------------------------------
+
 main :: IO ()
 main = do
   mPort <- lookupEnv "PORT"

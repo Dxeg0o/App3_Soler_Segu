@@ -3,7 +3,6 @@ name:                basicapi
 version:             0.1.0.0
 build-type:          Simple
 
--- Dependencias generales del ejecutable
 executable basicapi-exe
   main-is:             Main.hs
   hs-source-dirs:      app
