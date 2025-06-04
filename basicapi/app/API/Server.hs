@@ -8,6 +8,7 @@ module API.Server (runServer) where
 import           Control.Monad.IO.Class    (liftIO)
 import           Data.Aeson                (FromJSON, ToJSON)
 import           Data.Proxy                (Proxy(..))
+import           Data.Text                 (Text)
 import           GHC.Generics              (Generic)
 import           Network.Wai               (Application)
 import           Network.Wai.Handler.Warp  (run)
@@ -16,78 +17,96 @@ import           Network.Wai.Middleware.Cors
   , cors
   , simpleCorsResourcePolicy
   )
-import           Servant                   (Handler, Server, err400, throwError, (:<|>)(..)
-                                           , (:>), JSON, Post, ReqBody, serve)
-import qualified Servant
-import           Types                     (Grid, Energy, Pos)        -- de src/Types.hs
-import           PathFinder                (bestPath)                  -- de src/PathFinder.hs
+-- Aquí están todos los símbolos de Servant que vamos a usar:
+import           Servant
+  ( Handler
+  , Server
+  , serve
+  , (:<|>)(..)
+  , (:>)
+  , ReqBody
+  , JSON
+  , Post
+  )
+import qualified Servant as S
+
+import           Types                     (Grid, Energy, Pos)
+import           PathFinder                (bestPath)
 
 --------------------------------------------------------------------------------
--- 1) Tipos de petición y respuesta en JSON
+-- 1) TIPOS JSON
 --------------------------------------------------------------------------------
 
--- | JSON de entrada para /findPath
+-- | Lo que el cliente envía a /findPath
 data PathRequest = PathRequest
-  { prGrid         :: Grid    -- la matriz de enteros (Grid = [[Int]])
-  , prInitialEnergy :: Energy -- la energía inicial (alias Int)
+  { prGrid          :: Grid
+  , prInitialEnergy :: Energy
   } deriving (Eq, Show, Generic)
 
 instance FromJSON PathRequest
 
--- | JSON de salida si hay camino válido
+-- | En caso de éxito: camino y energía final
 data PathResponse = PathResponse
-  { prPath        :: [Pos]   -- lista de posiciones [(fila, columna)]
-  , prFinalEnergy :: Energy  -- energía restante al final
+  { prPath        :: [Pos]
+  , prFinalEnergy :: Energy
   } deriving (Eq, Show, Generic)
 
 instance ToJSON PathResponse
 
+-- | En caso de error: sólo un mensaje de texto
+data ErrorResponse = ErrorResponse
+  { errMsg :: Text
+  } deriving (Eq, Show, Generic)
+
+instance ToJSON ErrorResponse
+
 --------------------------------------------------------------------------------
--- 2) Definimos la API: solo un POST /findPath que recibe PathRequest y devuelve PathResponse
+-- 2) LA API: POST /findPath devuelve Either ErrorResponse PathResponse
 --------------------------------------------------------------------------------
 
 type PathFinderAPI =
-       "findPath" :> ReqBody '[JSON] PathRequest :> Post '[JSON] PathResponse
-
--- | Implementación del handler para el endpoint
-serverHandler :: PathRequest -> Handler PathResponse
-serverHandler (PathRequest grid initEnergy) =
-  case bestPath grid initEnergy of
-    Nothing          ->
-      -- Si no hay un camino válido, respondemos con 400 Bad Request y un mensaje
-      throwError err400 { Servant.errBody = "No hay un camino válido con energía ≥ 0." }
-    Just (ruta, fe) -> do
-      liftIO $ putStrLn $ "Ruta encontrada: " ++ show ruta ++ ", Energía final: " ++ show fe
-      return $ PathResponse ruta fe
-
--- | Construye el servidor Servant a partir de la definición y el handler
-pathFinderServer :: Server PathFinderAPI
-pathFinderServer = serverHandler
+       "findPath"
+    :> ReqBody '[JSON] PathRequest
+    :> Post '[JSON] (Either ErrorResponse PathResponse)
 
 apiProxy :: Proxy PathFinderAPI
 apiProxy = Proxy
 
 --------------------------------------------------------------------------------
--- 3) Aplicación Wai que envuelve el servidor con CORS “*” para POST
+-- 3) HANDLER: devuelve Left ErrorResponse o Right PathResponse
 --------------------------------------------------------------------------------
 
--- Permitimos CORS desde cualquier origen (corsOrigins = Nothing),
--- métodos POST y el header “Content-Type”.
+serverHandler :: PathRequest -> Handler (Either ErrorResponse PathResponse)
+serverHandler (PathRequest grid initEnergy) = do
+  liftIO $ putStrLn $ "Recibido POST /findPath con grid=" ++ show grid ++ " y energía=" ++ show initEnergy
+  case bestPath grid initEnergy of
+    Nothing ->
+      pure $ Left $ ErrorResponse "No hay un camino válido con la energía proporcionada."
+    Just (ruta, eFinal) -> do
+      liftIO $ putStrLn $ "Ruta encontrada: " ++ show ruta ++ ", energía final: " ++ show eFinal
+      pure $ Right $ PathResponse ruta eFinal
+
+pathFinderServer :: Server PathFinderAPI
+pathFinderServer = serverHandler
+
+--------------------------------------------------------------------------------
+-- 4) CORS “*” y SERVANT
+--------------------------------------------------------------------------------
+
 app :: Application
 app = cors (const $ Just policy) $ serve apiProxy pathFinderServer
   where
     policy :: CorsResourcePolicy
     policy = simpleCorsResourcePolicy
-      { corsOrigins        = Nothing        -- Nothing ≡ "*"
+      { corsOrigins        = Nothing       -- Nothing ≡ Access-Control-Allow-Origin: *
       , corsMethods        = ["POST"]
       , corsRequestHeaders = ["Content-Type"]
       }
 
 --------------------------------------------------------------------------------
--- 4) Función que arranca el servidor en el puerto dado
+-- 5) runServer que arranca Warp en el puerto dado
 --------------------------------------------------------------------------------
 
--- | runServer toma un Int (puerto) y levanta Warp con la app Servant
 runServer :: Int -> IO ()
 runServer port = do
   putStrLn $ "Arrancando PathFinder API en el puerto " ++ show port
