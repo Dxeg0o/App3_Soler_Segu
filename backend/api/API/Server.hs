@@ -1,6 +1,7 @@
 {-# LANGUAGE DataKinds #-}
 {-# LANGUAGE TypeOperators #-}
 {-# LANGUAGE OverloadedStrings #-}
+
 module API.Server (runServer, server, app) where
 
 import Control.Monad.IO.Class (liftIO)
@@ -9,6 +10,7 @@ import Network.Wai.Handler.Warp
 import Network.Wai.Middleware.Cors
 import Servant
 import Data.Aeson
+
 import API.Types
 import PathFinder (bestPath)
 
@@ -36,14 +38,14 @@ findPathHandler (PathRequest grid initialEnergy) = do
 healthHandler :: Handler Value
 healthHandler = return $ object ["status" .= ("OK" :: String), "service" .= ("PathFinder API" :: String)]
 
--- | Configuración de CORS más permisiva
+-- | Configuración de CORS para permitir requests desde el frontend
 corsPolicy :: CorsResourcePolicy
 corsPolicy = simpleCorsResourcePolicy
   { corsRequestHeaders = ["Content-Type", "Authorization", "Accept"]
   , corsMethods = ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"]
-  , corsOrigins = Nothing  -- Permite todos los orígenes (más permisivo para debugging)
-  , corsRequireOrigin = False
-  , corsVaryOrigin = False
+  , corsOrigins = Just (["https://app3-soler-segu.vercel.app", "http://localhost:3000"], True)
+  , corsRequireOrigin = True
+  , corsVaryOrigin = True
   , corsMaxAge = Just 86400
   }
 
@@ -58,5 +60,4 @@ runServer port = do
   putStrLn $ "Endpoints disponibles:"
   putStrLn $ "  POST http://localhost:" ++ show port ++ "/api/findPath"
   putStrLn $ "  GET  http://localhost:" ++ show port ++ "/health"
-  putStrLn $ "CORS configurado para permitir todos los orígenes"
   run port app
