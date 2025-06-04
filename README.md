@@ -120,3 +120,11 @@ La solución utiliza una búsqueda exhaustiva con poda (DFS) que:
 - **Validation.hs:** Lógica de validación separada para claridad
 - **Maybe types:** Para manejar casos de error de forma funcional
 - **Recursión tail-call:** Donde es posible para eficiencia
+
+## Configuración del Frontend
+
+El frontend utiliza la variable de entorno `NEXT_PUBLIC_API_BASE_URL` para
+definir la URL base del backend. En desarrollo se usa
+`http://localhost:8000`, pero al desplegar en plataformas como Vercel debes
+establecer `NEXT_PUBLIC_API_BASE_URL` con la URL pública de tu API
+(por ejemplo `https://app3-soler-segu.onrender.com`).

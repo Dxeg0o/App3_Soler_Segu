@@ -43,7 +43,9 @@ export default function PathFinderGame() {
     setLoading(true);
 
     try {
-      const resp = await fetch("http://localhost:8000/api/findPath", {
+      const baseUrl =
+        process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+      const resp = await fetch(`${baseUrl}/api/findPath`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
