@@ -41,12 +41,11 @@ healthHandler = return $ object ["status" .= ("OK" :: String), "service" .= ("Pa
 -- | Configuración de CORS para permitir requests desde el frontend
 corsPolicy :: CorsResourcePolicy
 corsPolicy = simpleCorsResourcePolicy
-  { corsRequestHeaders = ["Content-Type", "Authorization", "Accept"]
-  , corsMethods = ["GET", "POST", "PUT", "DELETE", "OPTIONS", "HEAD"]
+  { corsRequestHeaders = ["Content-Type"]
+  , corsMethods = ["GET", "POST", "OPTIONS"]
+  -- Permitimos el frontend desplegado en Vercel y localhost durante el desarrollo
   , corsOrigins = Just (["https://app3-soler-segu.vercel.app", "http://localhost:3000"], True)
-  , corsRequireOrigin = True
-  , corsVaryOrigin = True
-  , corsMaxAge = Just 86400
+  , corsRequireOrigin = False
   }
 
 -- | Aplicación WAI con middleware CORS
@@ -60,4 +59,4 @@ runServer port = do
   putStrLn $ "Endpoints disponibles:"
   putStrLn $ "  POST http://localhost:" ++ show port ++ "/api/findPath"
   putStrLn $ "  GET  http://localhost:" ++ show port ++ "/health"
-  runSettings (setPort port defaultSettings) app
+  run port app
