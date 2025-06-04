@@ -85,7 +85,7 @@ corsPolicy :: CorsResourcePolicy
 corsPolicy = simpleCorsResourcePolicy
   { corsRequestHeaders = ["Content-Type", "Authorization", "Accept"]
   , corsMethods        = ["GET", "POST", "OPTIONS"]
-  , corsOrigins        = Just ["*"]
+  , corsOrigins        = Nothing
   , corsRequireOrigin  = True
   , corsMaxAge         = Just 86400
   }
